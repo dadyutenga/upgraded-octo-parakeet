@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"time"
 
 	azanFS "github.com/dadyutenga/upgraded-octo-parakeet/cmd/audio"
@@ -45,6 +46,9 @@ func renderNav(currentMode int) string {
 }
 
 func main() {
+	// Cap memory at 55 MB
+	debug.SetMemoryLimit(55 * 1024 * 1024)
+
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt)
 
