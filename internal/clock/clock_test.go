@@ -9,9 +9,12 @@ import (
 func TestRenderDigit_ValidDigits(t *testing.T) {
 	for _, ch := range "0123456789" {
 		seg := RenderDigit(ch)
+		if len(seg) != DigitRows {
+			t.Errorf("digit %c: expected %d rows, got %d", ch, DigitRows, len(seg))
+		}
 		for row, line := range seg {
-			if len(line) != 3 {
-				t.Errorf("digit %c row %d: expected width 3, got %d (%q)", ch, row, len(line), line)
+			if len([]rune(line)) != DigitWidth {
+				t.Errorf("digit %c row %d: expected width %d, got %d (%q)", ch, row, DigitWidth, len([]rune(line)), line)
 			}
 		}
 	}
@@ -32,15 +35,15 @@ func TestRenderTime_Format(t *testing.T) {
 	output := RenderTime(tm, true)
 
 	lines := strings.Split(output, "\n")
-	if len(lines) != 5 {
-		t.Fatalf("expected 5 lines, got %d", len(lines))
+	if len(lines) != DigitRows {
+		t.Fatalf("expected %d lines, got %d", DigitRows, len(lines))
 	}
 
-	// All lines should have the same width
-	width := len(lines[0])
+	// All lines should have the same rune width
+	width := len([]rune(lines[0]))
 	for i, line := range lines {
-		if len(line) != width {
-			t.Errorf("line %d width %d != expected %d", i, len(line), width)
+		if len([]rune(line)) != width {
+			t.Errorf("line %d width %d != expected %d", i, len([]rune(line)), width)
 		}
 	}
 }
@@ -55,9 +58,9 @@ func TestRenderTime_ColonBlink(t *testing.T) {
 		t.Error("expected colon on/off to produce different output")
 	}
 
-	// "o" should appear in the colon-on version but not colon-off
-	if !strings.Contains(withColon, "o") {
-		t.Error("expected 'o' in colon-on output")
+	// "██" should appear in the colon-on version but not colon-off
+	if !strings.Contains(withColon, "██") {
+		t.Error("expected '██' in colon-on output")
 	}
 }
 
