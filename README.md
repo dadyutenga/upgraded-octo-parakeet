@@ -1,4 +1,4 @@
-# upgraded-octo-parakeet
+# My-Clock
 
 A collection of Go terminal projects for learning terminal graphics, CLI tools, and system monitoring.
 
